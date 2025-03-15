@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:43:38 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/02/24 15:38:46 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:52:58 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int					ft_printf_format(char format, va_list arg);
 int					ft_printf(const char *format, ...);
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10000
-# endif
 
+# endif
 char				*get_next_line(int fd);
 int					size_char_in_text(char *text, int ascii);
 char				*ft_charjoin(char *buf, char *malloc_tamp, size_t i);

@@ -1,11 +1,12 @@
-.PHONY = all clean fclean
+.PHONY = all clean fclean re
 CC = cc 
-FLAGS = -Wall -Wextra -MMD -MP 
+FLAGS = -Wall -Wextra -MMD -MP  -g3 -I$(LIBFT_DIR) -Iincludes
+FLAGLIBFT = -L$(LIBFT_DIR) -lft
 NAME = pipex
-LIBFT_DIR = srcs/libft_updated
+LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = srcs/
-SRC_FILES = main
+SRC_FILES = main execve_first execve_last free parsing 
 OBJ_DIR = objs/
 
 SRC = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
@@ -14,8 +15,8 @@ DEPS = $(addprefix $(OBJ_DIR), $(addsuffix .d, $(SRC_FILES)))
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME)  
+$(NAME): includes/pipex.h $(LIBFT) $(OBJ_DIR) $(OBJ)
+	$(CC) $(FLAGS) $(OBJ) -o $(NAME) $(FLAGLIBFT)
 
 $(LIBFT): FORCE
 	$(MAKE) -C $(LIBFT_DIR)
@@ -37,3 +38,5 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	rm -f $(LIBFT)
+
+re: fclean all
