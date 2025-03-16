@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:16:07 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/16 19:09:58 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:20:36 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	message_error_file(char *file, int type)
 {
 	char	*message;
 
-	if (type != -1 && access(file, type) == 0)
+	if (access(file, type) == 0)
 	{
 		file = ft_strjoin(file, "\n");
 		if (file == NULL)
