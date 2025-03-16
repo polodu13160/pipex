@@ -1,10 +1,10 @@
-Makefile
 includes
 infile
 libft
+Makefile
 objs
 other
+out
 outfile
 pipex
 srcs
-test.txt
