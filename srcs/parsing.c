@@ -6,12 +6,12 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/16 16:39:38 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:11:21 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
 #include "libft.h"
+#include "pipex.h"
 #include "stdlib.h"
 #include "unistd.h"
 #include <fcntl.h>
@@ -46,23 +46,23 @@ int	ft_parsing(char **argv, int ac, t_pip *exec)
 }
 int	ft_check_perm(t_pip *exec)
 {
-	char *message;
-	
 	exec->fd_infile = open(exec->infile, O_RDONLY);
 	if (exec->fd_infile == -1)
 	{
-		exec->infile = ft_strjoin(exec->infile, "\n");
-		message = ft_strjoin("zsh: no such file or directory: ", exec->infile);
-		free(exec->infile);
-		exec->infile = NULL;
-		ft_putstr_fd(message, 2);
-		free(message);
-		
+		if (message_error_file(exec->infile, R_OK))
+			perror("Crash Malloc Parsing");
+		exec->fd_infile = open("/dev/null", O_RDONLY);
+		if (exec->fd_infile == -1)
+		{
+			perror("Error opening /dev/null");
+			return (1);
+		}
 	}
-	exec->fd_outfile = open(exec->outfile, O_CREAT | O_WRONLY, 0644);
+	exec->fd_outfile = open(exec->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (exec->fd_outfile == -1)
 	{
-		perror(exec->outfile);
+		if (message_error_file(exec->infile, R_OK))
+			perror("Crash Malloc Parsing");
 		return (1);
 	}
 	return (0);
@@ -88,7 +88,7 @@ int	ft_add_slash_to_env(t_pip *exec)
 }
 int	ft_set_path_env(t_pip *exec, char **env)
 {
-	char	*text;
+	char *text;
 
 	while (*env != NULL)
 	{

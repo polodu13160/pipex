@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/16 16:59:45 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:01:51 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ static void	ft_execve_first_child(t_pip *exec, int *fd, int i)
 	int	test_acces;
 
 	close(fd[0]);
+
 	dup2(fd[1], 1);
+	
 	test_acces = access(exec->args[0][0], F_OK);
 	if (test_acces == 0)
 		execve(exec->args[0][0], exec->args[0], exec->env);
@@ -41,7 +43,9 @@ static void	ft_execve_first_child(t_pip *exec, int *fd, int i)
 			exec->path_absolut_exec = NULL;
 			i++;
 		}
+		
 	}
+	
 	finish(exec);
 	exit(3);
 }
@@ -79,7 +83,10 @@ int	ft_execve_first(int *fd, t_pip *exec)
 	dup2(exec->fd_infile, 0);
 	pid = fork();
 	if (pid == 0)
+	{
 		ft_execve_first_child(exec, fd, i);
+	}
+		
 	else
 	{
 		if (ft_execve_first_parent(pid, exec, fd) == 1)

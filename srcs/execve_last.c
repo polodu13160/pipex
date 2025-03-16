@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/16 17:19:56 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/16 17:39:31 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@ static void	ft_execve_last_child(t_pip *exec, int *fd, int i)
 			exec->path_absolut_exec = ft_strjoin(exec->path_args[i],
 					exec->args[1][0]);
 			if (exec->path_absolut_exec == NULL)
-				exit(-1);
-				
+				exit(-1);	
 			test_acces = access(exec->path_absolut_exec, F_OK);
 			if (test_acces == 0)
-				execve(exec->path_absolut_exec, exec->args[1], exec->env);
-				
+				execve(exec->path_absolut_exec, exec->args[1], exec->env);	
 			free(exec->path_absolut_exec);
 			exec->path_absolut_exec = NULL;
 			i++;

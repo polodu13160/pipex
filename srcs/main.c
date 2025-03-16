@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/16 17:02:19 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/16 17:35:56 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ int	ft_pipex(t_pip *exec)
 	return (0);
 }
 
+void init_exec(int ac, t_pip *exec, char **env)
+{
+	exec->path_absolut_exec = NULL;
+	exec->error_malloc_child = 0;
+	exec->error_not_found = 0;
+	exec->nb_pipes = ac - 2;
+	exec->env = env;
+}
+
 int	main(int ac, char **argv, char **env)
 {
 	t_pip	*exec;
@@ -41,10 +50,7 @@ int	main(int ac, char **argv, char **env)
 	exec = malloc(sizeof(t_pip));
 	if (exec == NULL)
 		return (1);
-	exec->path_absolut_exec = NULL;
-	exec->error_malloc_child = 0;
-	exec->error_not_found = 0;
-	exec->env = env;
+	init_exec(ac, exec, env);
 	if (ft_parsing(argv, ac, exec) == 1)
 	{
 		ft_putstr_fd("Error parsing", 2);
