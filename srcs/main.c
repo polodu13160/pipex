@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/20 13:37:23 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/20 22:36:22 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+
+void ft_execve_next(int *fd, t_pip *exec)
+{
+	int i;
+	i = 1;
+	while (exec->nb_pipes != i)
+	{
+		ft_execve_middle(fd, exec, i);
+		i++;
+	}
+	ft_execve_last(fd, exec);
+}
 
 int	ft_pipex(t_pip *exec)
 {
@@ -29,27 +42,11 @@ int	ft_pipex(t_pip *exec)
 		return (1);
 	}
 	i = 0;
-	while (i <= exec->nb_pipes)
+	if (exec->nb_pipes <= 0)
 	{
-		if (i == 0)
-		{
-			ft_execve_first(fd, exec);
-			i++;
-		}
-		if (i == 1 && exec->nb_pipes == 0)
-		{
-			return (0);
-		}
-		else
-		{
-			dprintf(2, "tiut");
-			ft_execve_last(fd, exec);
-			return (0);
-		}
-	}
-	if (ft_execve_first(fd, exec) == 1 || ft_execve_last(fd, exec) == 1)
-	{
-		return (1);
+		ft_execve_first(fd, exec);
+		if (exec->nb_pipes != 0)
+			ft_execve_next(fd, exec);
 	}
 	return (0);
 }

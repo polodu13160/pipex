@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:18:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/20 01:36:24 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:02:28 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ int			ft_pipex(t_pip *exec);
 int			main(int ac, char **argv, char **env);
 int message_error(char *first_message, char *last_message);
 int	message_error_file(char *files, int type);
-// void ft_printfinal(int *fd , t_pip *exec);
+
+
+
+
+
+int	ft_execve_middle(int *fd, t_pip *exec, int exec_args);
 
 #endif

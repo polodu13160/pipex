@@ -6,7 +6,7 @@ NAME = pipex
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = srcs/
-SRC_FILES = main execve_first execve_last free parsing messages
+SRC_FILES = main execve_first execve_last free parsing messages execve_middle
 OBJ_DIR = objs/
 
 SRC = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
