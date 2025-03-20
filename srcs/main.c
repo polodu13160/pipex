@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/20 02:04:11 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:37:23 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,11 @@ int	clean_arg(t_pip *exec)
     i = 0;
     count = 0;
     while (exec->args[i])
-        if (exec->args[i++][0] != 0)
+	{
+		 if (exec->args[i++][0] != 0)
             count++;
+	}
+       
 
 	if (count == 0)
 			return 1;
@@ -110,7 +113,7 @@ int	main(int ac, char **argv, char **env)
 		if (exec == NULL)
 			return (1);
 		init_exec(ac, exec, env);
-		if (ft_parsing(argv, ac, exec) == 1 || clean_arg(exec) == 1)
+		if (ft_parsing(argv, ac, exec) == 1 )
 		{
 			finish(exec);
 			ft_putstr_fd("Error parsing", 2);
