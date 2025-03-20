@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/16 17:35:56 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/20 02:04:11 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 int	ft_pipex(t_pip *exec)
 {
+	int	i;
 	int	pip_check;
 	int	fd[2];
 
@@ -27,6 +28,25 @@ int	ft_pipex(t_pip *exec)
 		perror("pipe");
 		return (1);
 	}
+	i = 0;
+	while (i <= exec->nb_pipes)
+	{
+		if (i == 0)
+		{
+			ft_execve_first(fd, exec);
+			i++;
+		}
+		if (i == 1 && exec->nb_pipes == 0)
+		{
+			return (0);
+		}
+		else
+		{
+			dprintf(2, "tiut");
+			ft_execve_last(fd, exec);
+			return (0);
+		}
+	}
 	if (ft_execve_first(fd, exec) == 1 || ft_execve_last(fd, exec) == 1)
 	{
 		return (1);
@@ -34,35 +54,74 @@ int	ft_pipex(t_pip *exec)
 	return (0);
 }
 
-void init_exec(int ac, t_pip *exec, char **env)
+void	init_exec(int ac, t_pip *exec, char **env)
 {
 	exec->path_absolut_exec = NULL;
 	exec->error_malloc_child = 0;
-	exec->error_not_found = 0;
-	exec->nb_pipes = ac - 2;
+	exec->error = 0;
+	exec->nb_pipes = ac - 4;
+	exec->path_args = NULL;
 	exec->env = env;
+	exec->fd_infile = -1;
+	exec->fd_outfile = -1;
 }
 
+int	clean_arg(t_pip *exec)
+{
+    int		i;
+    int		count;
+    int		j;
+    char	***new_args;
+
+    j = 0;
+    i = 0;
+    count = 0;
+    while (exec->args[i])
+        if (exec->args[i++][0] != 0)
+            count++;
+
+	if (count == 0)
+			return 1;
+    new_args = malloc(sizeof(char **) * (count + 1)); 
+    if (new_args == NULL)
+        return (1);
+    i = 0;
+    j = 0; 
+    while (exec->args[i])
+    {
+        if (exec->args[i][0] != 0)
+            new_args[j++] = exec->args[i]; 
+        i++;
+    }
+    new_args[j] = NULL; 
+	free_tab_three_dim(exec->args);
+    exec->nb_pipes = count - 1;
+    exec->args = new_args;
+    i = 0;
+    return (0);
+}
 int	main(int ac, char **argv, char **env)
 {
 	t_pip	*exec;
 
-	exec = malloc(sizeof(t_pip));
-	if (exec == NULL)
-		return (1);
-	init_exec(ac, exec, env);
-	if (ft_parsing(argv, ac, exec) == 1)
+	if (ac == 4 || ac == 5)
 	{
-		ft_putstr_fd("Error parsing", 2);
-		return (1);
-	}
-	exec->size_args = ac - 2;
-	if ((ft_check_perm(exec) == 1 || ft_set_path_env(exec, env) == 1
-			|| ft_pipex(exec) == 1 || 1 == 1))
-	{
-		if (finish(exec) == 1)
+		exec = malloc(sizeof(t_pip));
+		if (exec == NULL)
 			return (1);
+		init_exec(ac, exec, env);
+		if (ft_parsing(argv, ac, exec) == 1 || clean_arg(exec) == 1)
+		{
+			finish(exec);
+			ft_putstr_fd("Error parsing", 2);
+			return (1);
+		}
+		dprintf(2, "%d\n", exec->nb_pipes );
+		if ((ft_check_perm(exec) == 1 || ft_set_path_env(exec, env) == 1
+				|| ft_pipex(exec) == 1 || 1 == 1))
+		{
+			return (finish(exec));
+		}
 	}
-
-	return (0);
+	return (1);
 }

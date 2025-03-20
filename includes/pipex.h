@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:18:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/16 19:07:35 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/20 01:36:24 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ typedef struct s_pip
 	char	*infile;
 	char	*outfile;
 	char	***args;
-	int		size_args;
 	int		fd_infile;
 	int		fd_outfile;
 	char	**path_args;
 	char	*path_absolut_exec;
 	int		error_malloc_child;
-	int		error_not_found;
+	int		error;
 	char **env;
 	int 	nb_pipes;
+	int count_exec;
 }			t_pip;
 
 int			ft_execve_first(int *fd, t_pip *exec);
@@ -42,5 +42,6 @@ int			ft_pipex(t_pip *exec);
 int			main(int ac, char **argv, char **env);
 int message_error(char *first_message, char *last_message);
 int	message_error_file(char *files, int type);
+// void ft_printfinal(int *fd , t_pip *exec);
 
 #endif

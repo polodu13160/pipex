@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/16 20:21:17 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/20 00:59:21 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "stdlib.h"
 #include "unistd.h"
 #include <fcntl.h>
+
+
 
 int	ft_parsing(char **argv, int ac, t_pip *exec)
 {
@@ -33,7 +35,7 @@ int	ft_parsing(char **argv, int ac, t_pip *exec)
 	}
 	while (++i < ac - 1)
 	{
-		exec->args[j] = ft_split(argv[i], ' ');
+		exec->args[j] = ft_split(argv[i], ' ');;
 		if (exec->args[j++] == NULL)
 		{
 			free_tab_three_dim(exec->args);
@@ -64,8 +66,8 @@ int	ft_check_perm(t_pip *exec)
 		if (message_error_file(exec->outfile, F_OK))
 		{
 			perror("Crash Malloc Parsing");
-			return 1;
-		}	
+			return (1);
+		}
 	}
 	return (0);
 }
