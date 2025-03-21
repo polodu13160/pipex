@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/21 00:04:14 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/21 02:33:14 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ int	ft_execve_middle(int *fd, t_pip *exec, int exec_args)
 	pid = fork();
 	if (pid == 0)
 		ft_execve_middle_child(exec, fd, i, exec_args);
+		
 	return (0);
 }
