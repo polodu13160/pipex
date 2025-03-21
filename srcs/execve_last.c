@@ -60,7 +60,6 @@ static int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
 	close(fd[0]);
 	while (1)
 	{
-		dprintf(2, "pas bloque %d\n", ++i);
 		pidvalue = wait(&statuetemp);
 		if (pidvalue < 0)
 			break ;
@@ -96,7 +95,11 @@ int	ft_execve_last(int *fd, t_pip *exec)
 
 	pid = fork();
 	if (pid == 0)
-		ft_execve_last_child(exec, fd, i);
+	{
+			ft_execve_last_child(exec, fd, i);
+			exit(0);
+	}
+	
 	else
 	{
 		if (ft_execve_last_parent(pid, exec, fd) == 1)

@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/21 02:33:14 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/21 19:36:04 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,25 @@
 #include <unistd.h>
 
 
-static void ft_printfinal(int *fd )
+
+
+
+static void ft_printfinal(int *fd , int *new_fd)
 {
 	dup2(fd[0], 0);
+	dup2(new_fd[0], fd[0]);
 	close(fd[0]);
-	dup2(fd[1], 1);
+	close(new_fd[0]);
+	dup2(new_fd[1], 1);
+	close(new_fd[1]);
 	close(fd[1]);
 }
 
-static void	ft_execve_middle_child(t_pip *exec, int *fd, int i, int exec_args)
+static void	ft_execve_middle_child(t_pip *exec, int *fd, int i, int exec_args, int *new_fd)
 {
 	int	test_acces;
 
-	ft_printfinal(fd);
+	ft_printfinal(fd, new_fd);
 	test_acces = access(exec->args[exec_args][0], F_OK);
 	if (test_acces == 0 && ft_strchr(exec->args[exec_args][0],'/') != 0)
 	{
@@ -38,7 +44,6 @@ static void	ft_execve_middle_child(t_pip *exec, int *fd, int i, int exec_args)
 		perror("execve failed");
 		exit(2);
 	}
-		
 	else
 	{
 		while (exec->path_args[i])
@@ -64,7 +69,7 @@ static void	ft_execve_middle_child(t_pip *exec, int *fd, int i, int exec_args)
 
 
 
-int	ft_execve_middle(int *fd, t_pip *exec, int exec_args)
+int ft_execve_middle(int *fd, t_pip *exec, int exec_args, int *new_fd)
 {
 	pid_t pid;
 	int i;
@@ -74,7 +79,12 @@ int	ft_execve_middle(int *fd, t_pip *exec, int exec_args)
 	
 	pid = fork();
 	if (pid == 0)
-		ft_execve_middle_child(exec, fd, i, exec_args);
+		ft_execve_middle_child(exec, fd, i, exec_args, new_fd);
+	else 
+	{
+		close(fd[0]);
+		close(fd[1]);
+	}
 		
 	return (0);
 }
