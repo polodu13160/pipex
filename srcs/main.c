@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/21 19:17:21 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/21 23:46:22 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 void	ft_execve_next(int *fd, t_pip *exec)
 {
 	int	i;
-	int new_fd[2];
+	int	new_fd[2];
 
 	new_fd[0] = 1;
 	i = 1;
@@ -53,7 +53,6 @@ int	ft_pipex(t_pip *exec)
 		ft_execve_first(fd, exec);
 		if (exec->nb_pipes != 0)
 		{
-	
 			ft_execve_next(fd, exec);
 		}
 	}
@@ -69,6 +68,7 @@ void	init_exec(int ac, t_pip *exec, char **env)
 	exec->path_args = NULL;
 	exec->env = env;
 	exec->fd_infile = -1;
+	exec->error_first_pipe = 0;
 	exec->fd_outfile = -1;
 }
 
@@ -123,7 +123,6 @@ int	main(int ac, char **argv, char **env)
 			ft_putstr_fd("Error parsing", 2);
 			return (1);
 		}
-		dprintf(2, "%d\n", exec->nb_pipes);
 		if ((ft_check_perm(exec) == 1 || ft_set_path_env(exec, env) == 1
 				|| ft_pipex(exec) == 1 || 1 == 1))
 		{

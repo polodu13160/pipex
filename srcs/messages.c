@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:16:07 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/16 19:20:36 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/21 23:35:47 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	message_error_file(char *file, int type)
 		file = ft_strjoin(file, "\n");
 		if (file == NULL)
 			return (1);
-		message = ft_strjoin("zsh: permission denied: ", file);
+		message = ft_strjoin("Permission denied: ", file);
 	}
 	else
 	{

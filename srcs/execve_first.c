@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/21 18:29:35 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/21 23:53:40 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-static	void check_no_pipe(t_pip *exec, int *fd)
+static void	check_no_pipe(t_pip *exec, int *fd)
 {
 	close(fd[0]);
 	// close(fd[1]);
@@ -30,7 +30,6 @@ static	void check_no_pipe(t_pip *exec, int *fd)
 	}
 	else
 	{
-		
 		dup2(exec->fd_infile, 0);
 		close(exec->fd_infile);
 		dup2(fd[1], 1);
@@ -42,13 +41,12 @@ static void	ft_execve_first_child(t_pip *exec, int *fd, int i)
 {
 	int	test_acces;
 
-	check_no_pipe(exec,fd);
+	check_no_pipe(exec, fd);
 	test_acces = access(exec->args[0][0], F_OK);
-	if (test_acces == 0 && ft_strchr(exec->args[0][0],'/') != 0)
+	if (test_acces == 0 && ft_strchr(exec->args[0][0], '/') != 0)
 	{
 		execve(exec->args[0][0], exec->args[0], exec->env);
 		perror("execve failed");
-		exit(2);
 	}
 	else
 	{
@@ -57,13 +55,12 @@ static void	ft_execve_first_child(t_pip *exec, int *fd, int i)
 			exec->path_absolut_exec = ft_strjoin(exec->path_args[i],
 					exec->args[0][0]);
 			if (exec->path_absolut_exec == NULL)
-				exit(2);
+				break ;
 			test_acces = access(exec->path_absolut_exec, F_OK);
 			if (test_acces == 0)
 			{
 				execve(exec->path_absolut_exec, exec->args[0], exec->env);
 				perror("execve failed");
-				exit(2);
 			}
 			free(exec->path_absolut_exec);
 			exec->path_absolut_exec = NULL;
@@ -84,7 +81,10 @@ int	ft_execve_first(int *fd, t_pip *exec)
 	pid = fork();
 	if (pid == 0)
 	{
-		ft_execve_first_child(exec, fd, i);
+		if (exec->error_first_pipe == 0)
+			ft_execve_first_child(exec, fd, i);
+		else 
+			finish(exec);
 		exit(0);
 	}
 	exec->count_exec = 1;
