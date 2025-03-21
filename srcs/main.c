@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/21 19:17:21 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/21 22:37:15 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,19 @@ int	ft_pipex(t_pip *exec)
 	int	i;
 	int	pip_check;
 	int	fd[2];
-
+	
+	if (ft_strncmp(exec->infile,"here_doc", 8) == 0)
+		return ft_here_doc(exec);
 	pip_check = pipe(fd);
+	
 	if (pip_check == -1)
 	{
 		perror("pipe");
 		return (1);
 	}
+	
 	i = 0;
+	
 	if (exec->nb_pipes >= 0)
 	{
 		ft_execve_first(fd, exec);
@@ -60,7 +65,7 @@ int	ft_pipex(t_pip *exec)
 	return (0);
 }
 
-void	init_exec(int ac, t_pip *exec, char **env)
+void	init_exec(int ac, t_pip *exec, char **env, char **argv)
 {
 	exec->path_absolut_exec = NULL;
 	exec->error_malloc_child = 0;
@@ -70,6 +75,7 @@ void	init_exec(int ac, t_pip *exec, char **env)
 	exec->env = env;
 	exec->fd_infile = -1;
 	exec->fd_outfile = -1;
+	exec->limiter = argv[2];
 }
 
 int	clean_arg(t_pip *exec)
@@ -116,14 +122,14 @@ int	main(int ac, char **argv, char **env)
 		exec = malloc(sizeof(t_pip));
 		if (exec == NULL)
 			return (1);
-		init_exec(ac, exec, env);
+			
+		init_exec(ac, exec, env, argv);
 		if (ft_parsing(argv, ac, exec) == 1)
 		{
 			finish(exec);
 			ft_putstr_fd("Error parsing", 2);
 			return (1);
 		}
-		dprintf(2, "%d\n", exec->nb_pipes);
 		if ((ft_check_perm(exec) == 1 || ft_set_path_env(exec, env) == 1
 				|| ft_pipex(exec) == 1 || 1 == 1))
 		{
