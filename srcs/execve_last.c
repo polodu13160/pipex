@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execve_last.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 01:15:34 by pde-petr          #+#    #+#             */
+/*   Updated: 2025/03/22 01:15:35 by pde-petr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "pipex.h"
 #include <stdlib.h>
@@ -24,40 +36,21 @@ static void	ft_execve_last_child(t_pip *exec, int *fd, int i)
 	{
 		execve(exec->args[1][0], exec->args[1], exec->env);
 		perror("execve failed");
+		finish(exec);
 		exit(2);
 	}
 	else
-	{
-		while (exec->path_args[i])
-		{
-			exec->path_absolut_exec = ft_strjoin(exec->path_args[i],
-					exec->args[1][0]);
-			if (exec->path_absolut_exec == NULL)
-				exit(-1);
-			test_acces = access(exec->path_absolut_exec, F_OK);
-			if (test_acces == 0)
-			{
-				execve(exec->path_absolut_exec, exec->args[1], exec->env);
-			}
-			free(exec->path_absolut_exec);
-			exec->path_absolut_exec = NULL;
-			i++;
-		}
-	}
+		exec_to_env(exec, i, exec->nb_pipes);
 	finish(exec);
 	exit(127);
 }
 
-static int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
+static int	wait_child(pid_t pid)
 {
-	int		status;
-	pid_t	pidvalue;
 	int		statuetemp;
-	int		i;
+	pid_t	pidvalue;
+	int		status;
 
-	i = 0;
-	close(fd[1]);
-	close(fd[0]);
 	while (1)
 	{
 		pidvalue = wait(&statuetemp);
@@ -66,7 +59,18 @@ static int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
 		if (pidvalue == pid)
 			status = statuetemp;
 	}
-	// waitpid(-1, &status, 0);
+	return (status);
+}
+
+static int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
+{
+	int	status;
+	int	i;
+
+	i = 0;
+	close(fd[1]);
+	close(fd[0]);
+	status = wait_child(pid);
 	if (WEXITSTATUS(status) == -1)
 	{
 		exec->error_malloc_child = 1;
@@ -82,24 +86,21 @@ static int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
 		}
 	}
 	exec->error = WEXITSTATUS(status);
-	// printf("%d", exec->error);
 	return (0);
 }
 
 int	ft_execve_last(int *fd, t_pip *exec)
 {
-	pid_t pid;
-	int i;
+	pid_t	pid;
+	int		i;
 
 	i = 0;
-
 	pid = fork();
 	if (pid == 0)
 	{
-			ft_execve_last_child(exec, fd, i);
-			exit(0);
+		ft_execve_last_child(exec, fd, i);
+		exit(0);
 	}
-	
 	else
 	{
 		if (ft_execve_last_parent(pid, exec, fd) == 1)

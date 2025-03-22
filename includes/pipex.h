@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:18:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/21 23:53:56 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/22 01:28:03 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,25 @@ typedef struct s_pip
 	char	*path_absolut_exec;
 	int		error_malloc_child;
 	int		error;
-	char **env;
-	int 	nb_pipes;
-	int count_exec;
-	int error_first_pipe;
+	char	**env;
+	int		nb_pipes;
+	int		count_exec;
+	int		error_first_pipe;
 }			t_pip;
 
 int			ft_execve_first(int *fd, t_pip *exec);
 int			ft_execve_last(int *fd, t_pip *exec);
 void		free_tab_three_dim(char ***tab);
 void		free_tab_two_dim(char **tab);
-int		finish(t_pip *exec);
+int			finish(t_pip *exec);
 int			ft_parsing(char **argv, int ac, t_pip *exec);
 int			ft_check_perm(t_pip *exec);
 int			ft_add_slash_to_env(t_pip *exec);
 int			ft_set_path_env(t_pip *exec, char **env);
 int			ft_pipex(t_pip *exec);
 int			main(int ac, char **argv, char **env);
-int message_error(char *first_message, char *last_message);
-int	message_error_file(char *files, int type);
-int ft_execve_middle(int *fd, t_pip *exec, int exec_args, int *new_fd);
+int			message_error(char *first_message, char *last_message);
+int			message_error_file(char *files, int type);
+int			ft_execve_middle(int *fd, t_pip *exec, int exec_args, int *new_fd);
+void		exec_to_env(t_pip *exec, int i, int arg_exec);
 #endif

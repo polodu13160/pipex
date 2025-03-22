@@ -6,14 +6,13 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:05:46 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/21 23:44:41 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/22 01:15:22 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "stdlib.h"
 #include <unistd.h>
-
 
 void	free_tab_three_dim(char ***tab)
 {
@@ -35,9 +34,10 @@ void	free_tab_three_dim(char ***tab)
 	}
 	free(tab);
 }
+
 void	free_tab_two_dim(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -48,19 +48,18 @@ void	free_tab_two_dim(char **tab)
 	free(tab);
 }
 
-int finish(t_pip *exec)
+int	finish(t_pip *exec)
 {
-	int value_return;
+	int	value_return;
 
 	value_return = 0;
-
 	if (exec->fd_infile != -1)
 		close(exec->fd_infile);
-	else 
+	else
 		value_return = 1;
 	if (exec->fd_outfile != -1)
 		close(exec->fd_outfile);
-	else 
+	else
 		value_return = 1;
 	if (exec->args != NULL)
 		free_tab_three_dim(exec->args);
@@ -71,5 +70,5 @@ int finish(t_pip *exec)
 	if (exec->error_malloc_child == 1 || exec->error != 0)
 		value_return = exec->error;
 	free(exec);
-	return value_return;
+	return (value_return);
 }

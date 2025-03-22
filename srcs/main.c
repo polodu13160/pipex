@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/21 23:46:22 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/22 01:17:41 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,30 +83,24 @@ int	clean_arg(t_pip *exec)
 	i = 0;
 	count = 0;
 	while (exec->args[i])
-	{
 		if (exec->args[i++][0] != 0)
 			count++;
-	}
 	if (count == 0)
 		return (1);
-	new_args = malloc(sizeof(char **) * (count + 1));
+	new_args = ft_calloc((count + 1), sizeof(char **));
 	if (new_args == NULL)
 		return (1);
 	i = 0;
 	j = 0;
 	while (exec->args[i])
-	{
 		if (exec->args[i][0] != 0)
-			new_args[j++] = exec->args[i];
-		i++;
-	}
-	new_args[j] = NULL;
+			new_args[j++] = exec->args[i++];
 	free_tab_three_dim(exec->args);
 	exec->nb_pipes = count - 1;
 	exec->args = new_args;
-	i = 0;
 	return (0);
 }
+
 int	main(int ac, char **argv, char **env)
 {
 	t_pip	*exec;

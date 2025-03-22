@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/21 23:46:04 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/22 01:21:03 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@
 #include "unistd.h"
 #include <fcntl.h>
 
-int	check_text_arg_and_split(int i, int ac, char **argv, t_pip *exec, int j)
+static int	check_text_arg_and_split(int ac, char **argv, t_pip *exec, int j)
 {
+	int	i;
+
+	i = 1;
 	while (++i < ac - 1)
 	{
 		exec->args[j] = ft_split(argv[i], ' ');
@@ -43,23 +46,22 @@ int	check_text_arg_and_split(int i, int ac, char **argv, t_pip *exec, int j)
 
 int	ft_parsing(char **argv, int ac, t_pip *exec)
 {
-	int	i;
 	int	j;
 
+	j = 0;
 	exec->infile = argv[1];
 	exec->outfile = argv[ac - 1];
-	i = 1;
-	j = 0;
 	exec->args = ft_calloc(((ac - 2) + 1), sizeof(char **));
 	if (exec->args == NULL)
 	{
 		free(exec);
 		return (1);
 	}
-	if (check_text_arg_and_split(i, ac, argv, exec, j) == 1)
+	if (check_text_arg_and_split(ac, argv, exec, j) == 1)
 		return (1);
 	return (0);
 }
+
 int	ft_check_perm(t_pip *exec)
 {
 	exec->fd_infile = open(exec->infile, O_RDONLY);
@@ -102,9 +104,10 @@ int	ft_add_slash_to_env(t_pip *exec)
 	}
 	return (0);
 }
+
 int	ft_set_path_env(t_pip *exec, char **env)
 {
-	char *text;
+	char	*text;
 
 	while (*env != NULL)
 	{

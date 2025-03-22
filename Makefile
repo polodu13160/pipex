@@ -1,12 +1,12 @@
 .PHONY = all clean fclean re
 CC = cc 
-FLAGS = -Wall -Wextra -MMD -MP  -g3 -I$(LIBFT_DIR) -Iincludes
+FLAGS = -Wall -Wextra -Werror -MMD -MP  -I$(LIBFT_DIR)/includes -Iincludes
 FLAGLIBFT = -L$(LIBFT_DIR) -lft
 NAME = pipex
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = srcs/
-SRC_FILES = main execve_first execve_last free parsing messages execve_middle
+SRC_FILES = main execve_first execve_last free parsing messages execve_middle exec_env
 OBJ_DIR = objs/
 
 SRC = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
