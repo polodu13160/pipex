@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:18:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/22 01:28:03 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/22 02:45:23 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct s_pip
 	int		error;
 	char	**env;
 	int		nb_pipes;
-	int		count_exec;
 	int		error_first_pipe;
 }			t_pip;
 
