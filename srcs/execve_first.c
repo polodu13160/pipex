@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/24 19:07:21 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/24 20:11:42 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	ft_execve_first(int *fd, t_pip *exec)
 			close(fd[1]);
 			finish(exec);
 		}
-			
 		exit(0);
 	}
 	return (0);
