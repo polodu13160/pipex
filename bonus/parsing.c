@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/24 20:13:26 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:55:03 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	ft_check_perm(t_pip *exec)
 			perror("Crash Malloc Parsing");
 			return (1);
 		}
-		return (1);
 	}
 	return (0);
 }
