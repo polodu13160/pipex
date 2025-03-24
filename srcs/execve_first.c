@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/22 02:45:18 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:44:45 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,12 @@ int	ft_execve_first(int *fd, t_pip *exec)
 		if (exec->error_first_pipe == 0)
 			ft_execve_first_child(exec, fd, i);
 		else
+		{
+			close(fd[0]);
+			close(fd[1]);
 			finish(exec);
+		}
+			
 		exit(0);
 	}
 	return (0);

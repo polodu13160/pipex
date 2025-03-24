@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/22 01:21:03 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:55:03 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,6 @@ int	ft_check_perm(t_pip *exec)
 	{
 		if (message_error_file(exec->infile, F_OK))
 			perror("Crash Malloc Parsing");
-		exec->fd_infile = open("/dev/null", O_RDONLY);
-		if (exec->fd_infile == -1)
-			perror("Error opening /dev/null");
 		exec->error_first_pipe = 1;
 	}
 	exec->fd_outfile = open(exec->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
