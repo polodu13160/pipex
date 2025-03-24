@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/24 18:44:45 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/24 19:07:21 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static void	check_no_pipe(t_pip *exec, int *fd)
 	{
 		dup2(exec->fd_infile, 0);
 		close(exec->fd_infile);
+		close(exec->fd_outfile);
 		dup2(fd[1], 1);
+		close(fd[0]);
 		close(fd[1]);
 	}
 }

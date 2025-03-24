@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/22 01:17:17 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/24 19:41:47 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 
 static void	ft_printfinal(int *fd, int *new_fd)
 {
+	
+	
 	dup2(fd[0], 0);
 	dup2(new_fd[0], fd[0]);
 	close(fd[0]);
@@ -33,6 +35,8 @@ static void	ft_execve_middle_child(t_pip *exec, int *fd, int exec_args,
 {
 	int	i;
 	int	test_acces;
+	close(exec->fd_infile);
+	close(exec->fd_outfile);
 
 	i = 0;
 	ft_printfinal(fd, new_fd);

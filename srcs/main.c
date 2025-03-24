@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/22 03:10:49 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/24 20:09:31 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	main(int ac, char **argv, char **env)
 {
 	t_pip	*exec;
 
-	if (ac >= 4)
+	if (ac == 5)
 	{
 		exec = malloc(sizeof(t_pip));
 		if (exec == NULL)

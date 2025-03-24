@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:15:34 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/22 01:15:35 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/24 19:12:24 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	ft_printfinal(int *fd, t_pip *exec)
 	close(fd[0]);
 	dup2(exec->fd_outfile, 1);
 	close(exec->fd_outfile);
+	close(exec->fd_infile);
 }
 
 static void	ft_execve_last_child(t_pip *exec, int *fd, int i)
