@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:16:07 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/22 03:11:32 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:50:41 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ int	message_error_file(char *file, int type)
 
 	if (access(file, type) == 0)
 	{
-		file = NULL;
+		file = ft_strjoin(file, "\n");
 		if (file == NULL)
 			return (1);
 		message = ft_strjoin("Permission denied: ", file);
 	}
 	else
 	{
-		file = NULL;
+		file = ft_strjoin(file, "\n");
 		if (file == NULL)
 			return (1);
 		message = ft_strjoin("No such file or directory: ", file);
