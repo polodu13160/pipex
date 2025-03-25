@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/24 20:12:53 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:57:07 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ void	ft_execve_next(int *fd, t_pip *exec)
 	while (exec->nb_pipes != i)
 	{
 		if (pipe(new_fd) < 0)
-			return ;
+		{
+			perror("pipe");
+			finish(exec);
+			exit(1);
+		}
 		ft_execve_middle(fd, exec, i, new_fd);
 		fd[0] = new_fd[0];
 		fd[1] = new_fd[1];
@@ -72,40 +76,11 @@ void	init_exec(int ac, t_pip *exec, char **env)
 	exec->fd_outfile = -1;
 }
 
-int	clean_arg(t_pip *exec)
-{
-	int		i;
-	int		count;
-	int		j;
-	char	***new_args;
-
-	j = 0;
-	i = 0;
-	count = 0;
-	while (exec->args[i])
-		if (exec->args[i++][0] != 0)
-			count++;
-	if (count == 0)
-		return (1);
-	new_args = ft_calloc((count + 1), sizeof(char **));
-	if (new_args == NULL)
-		return (1);
-	i = 0;
-	j = 0;
-	while (exec->args[i])
-		if (exec->args[i][0] != 0)
-			new_args[j++] = exec->args[i++];
-	free_tab_three_dim(exec->args);
-	exec->nb_pipes = count - 1;
-	exec->args = new_args;
-	return (0);
-}
-
 int	main(int ac, char **argv, char **env)
 {
 	t_pip	*exec;
 
-	if (ac <= 4)
+	if (ac >= 4)
 	{
 		exec = malloc(sizeof(t_pip));
 		if (exec == NULL)

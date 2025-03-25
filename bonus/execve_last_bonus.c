@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execve_last.c                                      :+:      :+:    :+:   */
+/*   execve_last_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:15:34 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/24 19:12:24 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/25 05:07:19 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,21 @@ static void	ft_execve_last_child(t_pip *exec, int *fd, int i)
 	int	test_acces;
 
 	ft_printfinal(fd, exec);
-	test_acces = access(exec->args[1][0], F_OK);
-	if (test_acces == 0 && ft_strchr(exec->args[1][0], '/') != 0)
+	if (exec->args[1][0] != NULL)
 	{
-		execve(exec->args[1][0], exec->args[1], exec->env);
-		perror("execve failed");
-		finish(exec);
-		exit(2);
+		test_acces = access(exec->args[1][0], F_OK);
+		if (test_acces == 0 && ft_strchr(exec->args[1][0], '/') != 0)
+		{
+			execve(exec->args[1][0], exec->args[1], exec->env);
+			perror("execve failed");
+			finish(exec);
+			exit(2);
+		}
+		else
+			exec_to_env(exec, i, exec->nb_pipes);
 	}
-	else
-		exec_to_env(exec, i, exec->nb_pipes);
+	if (exec->args[1][0] == NULL)
+		message_error("command not found:", "\n");
 	finish(exec);
 	exit(127);
 }

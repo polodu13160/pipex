@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execve_first.c                                     :+:      :+:    :+:   */
+/*   execve_first_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/24 20:11:42 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/25 05:19:54 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,12 @@ int	ft_execve_first(int *fd, t_pip *exec)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (exec->error_first_pipe == 0)
+		if (exec->error_first_pipe == 0 && exec->args[0][0] != NULL)
 			ft_execve_first_child(exec, fd, i);
 		else
 		{
+			if (exec->error_first_pipe == 0 && exec->args[0][0] == NULL)
+				message_error("command not found:", "\n");
 			close(fd[0]);
 			close(fd[1]);
 			finish(exec);

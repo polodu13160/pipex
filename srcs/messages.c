@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:16:07 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/24 18:50:41 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/25 05:07:04 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 int	message_error(char *first_message, char *last_message)
 {
-	last_message = NULL;
+	last_message = ft_strjoin(last_message, "\n");
 	if (last_message == NULL)
 		return (1);
-	first_message = NULL;
+	first_message = ft_strjoin(first_message, last_message);
 	if (first_message == NULL)
 	{
 		free(last_message);

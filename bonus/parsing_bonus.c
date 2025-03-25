@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/24 16:55:03 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/25 04:15:23 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,9 @@ static int	check_text_arg_and_split(int ac, char **argv, t_pip *exec, int j)
 			free(exec);
 			return (1);
 		}
-		else
-		{
-			if (exec->args[j][0] == 0)
-				free_tab_two_dim(exec->args[j--]);
-		}
 		j++;
 	}
 	exec->args[j] = NULL;
-	exec->nb_pipes = j - 1;
 	if (exec->nb_pipes == -1)
 		return (1);
 	return (0);
@@ -79,6 +73,7 @@ int	ft_check_perm(t_pip *exec)
 			perror("Crash Malloc Parsing");
 			return (1);
 		}
+		return (1);
 	}
 	return (0);
 }
