@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:15:34 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/25 05:07:19 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:05:32 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,19 @@
 
 static void	ft_printfinal(int *fd, t_pip *exec)
 {
+	if (dup2(fd[0], 0) == -1 || dup2(exec->fd_outfile, 1) == -1)
+	{
+		close(fd[1]);
+		close(fd[0]);
+		perror("Error dup");
+		finish(exec);
+		exit(1);
+	}
 	close(fd[1]);
-	dup2(fd[0], 0);
 	close(fd[0]);
-	dup2(exec->fd_outfile, 1);
 	close(exec->fd_outfile);
-	close(exec->fd_infile);
+	if (exec->fd_infile != -1)
+		close(exec->fd_infile);
 }
 
 static void	ft_execve_last_child(t_pip *exec, int *fd, int i)
@@ -97,8 +104,8 @@ static int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
 
 int	ft_execve_last(int *fd, t_pip *exec)
 {
-	pid_t	pid;
-	int		i;
+	pid_t pid;
+	int i;
 
 	i = 0;
 	pid = fork();

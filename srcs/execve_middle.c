@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/24 20:11:52 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:59:13 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,21 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-static void	ft_printfinal(int *fd, int *new_fd)
+static void	ft_printfinal(int *fd, int *new_fd, t_pip *exec)
 {
-	dup2(fd[0], 0);
-	dup2(new_fd[0], fd[0]);
+	if (dup2(fd[0], 0) == -1 || dup2(new_fd[0], fd[0]) == -1 || dup2(new_fd[1],
+			1))
+	{
+		close(fd[0]);
+		close(new_fd[0]);
+		close(new_fd[1]);
+		close(fd[1]);
+		perror("Error dup");
+		finish(exec);
+		exit(1);
+	}
 	close(fd[0]);
 	close(new_fd[0]);
-	dup2(new_fd[1], 1);
 	close(new_fd[1]);
 	close(fd[1]);
 }
@@ -37,17 +45,18 @@ static void	ft_execve_middle_child(t_pip *exec, int *fd, int exec_args,
 	close(exec->fd_infile);
 	close(exec->fd_outfile);
 	i = 0;
-	ft_printfinal(fd, new_fd);
-	test_acces = access(exec->args[exec_args][0], F_OK);
-	if (test_acces == 0 && ft_strchr(exec->args[exec_args][0], '/') != 0)
+	ft_printfinal(fd, new_fd, exec);
+	if (exec->args[exec_args][0] != NULL)
 	{
-		execve(exec->args[exec_args][0], exec->args[exec_args], exec->env);
-		perror("execve failed");
-		exit(2);
-	}
-	else
-	{
-		exec_to_env(exec, i, exec_args);
+		test_acces = access(exec->args[exec_args][0], F_OK);
+		if (test_acces == 0 && ft_strchr(exec->args[exec_args][0], '/') != 0)
+		{
+			execve(exec->args[exec_args][0], exec->args[exec_args], exec->env);
+			perror("execve failed");
+			exit(2);
+		}
+		else
+			exec_to_env(exec, i, exec_args);
 	}
 	finish(exec);
 	exit(127);

@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/25 18:57:07 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:33:54 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	ft_execve_next(int *fd, t_pip *exec)
 	int	i;
 	int	new_fd[2];
 
-	new_fd[0] = 1;
 	i = 1;
 	while (exec->nb_pipes != i)
 	{
@@ -32,6 +31,8 @@ void	ft_execve_next(int *fd, t_pip *exec)
 			exit(1);
 		}
 		ft_execve_middle(fd, exec, i, new_fd);
+		close(fd[0]);
+		close(fd[1]);
 		fd[0] = new_fd[0];
 		fd[1] = new_fd[1];
 		i++;

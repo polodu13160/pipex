@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/25 19:12:08 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:58:39 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,27 @@
 
 static void	check_no_pipe(t_pip *exec, int *fd)
 {
-	close(fd[0]);
 	if (exec->nb_pipes == 0)
 	{
-		dup2(exec->fd_infile, 0);
-		dup2(exec->fd_outfile, 1);
-		close(exec->fd_outfile);
-		close(exec->fd_infile);
+		if (dup2(exec->fd_infile, 0) == -1 || dup2(exec->fd_outfile, 1) == -1)
+		{
+			close(fd[0]);
+			close(fd[1]);
+			perror("Error dup");
+			finish(exec);
+			exit(1);
+		}
 	}
 	else
 	{
-		dup2(exec->fd_infile, 0);
-		close(exec->fd_infile);
-		close(exec->fd_outfile);
-		dup2(fd[1], 1);
-		close(fd[0]);
-		close(fd[1]);
+		if (dup2(exec->fd_infile, 0) == -1 || dup2(fd[1], 1) == -1)
+		{
+			close(fd[0]);
+			close(fd[1]);
+			perror("Error dup");
+			finish(exec);
+			exit(1);
+		}
 	}
 }
 
@@ -42,6 +47,9 @@ static void	ft_execve_first_child(t_pip *exec, int *fd, int i)
 {
 	int	test_acces;
 
+	close(fd[0]);
+	close(exec->fd_infile);
+	close(exec->fd_outfile);
 	check_no_pipe(exec, fd);
 	test_acces = access(exec->args[0][0], F_OK);
 	if (test_acces == 0 && ft_strchr(exec->args[0][0], '/') != 0)
