@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 20:27:09 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 20:32:47 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_check_perm(t_pip *exec)
 		perror(exec->infile);
 		exec->error_first_pipe = 1;
 	}
-	exec->fd_outfile = open(exec->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	exec->fd_outfile = open(exec->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (exec->fd_outfile == -1)
 	{
 		perror(exec->outfile);
