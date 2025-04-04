@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 17:30:27 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:59:30 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ static void	ft_execve_middle_child(t_pip *exec, int *fd, int exec_args,
 		if (test_acces == 0 && ft_strchr(exec->args[exec_args][0], '/') != 0)
 		{
 			execve(exec->args[exec_args][0], exec->args[exec_args], exec->env);
-			perror("execve failed");
-			exit(2);
+			exit(126);
 		}
 		else
 			exec_to_env(exec, i, exec_args);
@@ -67,6 +66,7 @@ int	ft_execve_middle(int *fd, t_pip *exec, int exec_args, int *new_fd)
 	pid_t	pid;
 
 	pid = fork();
+	exec->pids[exec_args] = pid;
 	if (pid == 0)
 		ft_execve_middle_child(exec, fd, exec_args, new_fd);
 	else

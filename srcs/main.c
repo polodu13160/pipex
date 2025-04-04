@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 20:27:03 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:25:14 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int	main(int ac, char **argv, char **env)
 		if (exec == NULL)
 			return (1);
 		init_exec(ac, exec, env);
-		if (ft_parsing(argv, ac, exec) == 1)
+		exec->pids = ft_calloc(ac - 3, sizeof(pid_t));
+		if (exec->pids == NULL || ft_parsing(argv, ac, exec) == 1)
 		{
 			finish(exec);
 			ft_putstr_fd("Error parsing", 2);

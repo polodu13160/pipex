@@ -6,14 +6,13 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 19:55:48 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:59:15 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "pipex.h"
 #include <stdlib.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -58,14 +57,13 @@ static void	ft_execve_first_child(t_pip *exec, int *fd)
 	if (test_acces == 0 && ft_strchr(exec->args[0][0], '/') != 0)
 	{
 		execve(exec->args[0][0], exec->args[0], exec->env);
-		perror("execve failed");
 		finish(exec);
-		exit(3);
+		exit(126);
 	}
 	else
 		exec_to_env(exec, i, 0);
 	finish(exec);
-	exit(3);
+	exit(127);
 }
 
 int	ft_execve_first(int *fd, t_pip *exec)
@@ -73,6 +71,7 @@ int	ft_execve_first(int *fd, t_pip *exec)
 	pid_t	pid;
 
 	pid = fork();
+	exec->pids[0] = pid;
 	if (pid == 0)
 	{
 		if (exec->error_first_pipe == 0 && exec->args[0][0] != NULL)
@@ -85,13 +84,6 @@ int	ft_execve_first(int *fd, t_pip *exec)
 			finish(exec);
 		}
 		exit(0);
-	}
-	if (pid != 0 && exec->error_first_pipe == 0)
-	{
-		if (exec->args[0][0] == NULL)
-			message_error("", ": Permission denied");
-		else
-			message_error(exec->args[0][0], ": command not found");
 	}
 	return (0);
 }

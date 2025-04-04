@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:05:46 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 19:46:55 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:19:03 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	finish(t_pip *exec)
 	int	value_return;
 
 	value_return = 0;
+	if (exec->pids != NULL)
+		free(exec->pids);
 	if (exec->fd_infile != -1)
 		close(exec->fd_infile);
 	else

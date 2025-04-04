@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:15:34 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 20:26:55 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:57:51 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,20 @@ static void	ft_execve_last_child(t_pip *exec, int *fd, int i)
 	exit(127);
 }
 
-static int	wait_child(pid_t pid)
+
+static int	wait_child(pid_t pid, t_pip *exec)
 {
 	int		statuetemp;
 	pid_t	pidvalue;
 	int		status;
 
-	while (1)
+	pidvalue = wait(&statuetemp);
+	while (pidvalue > 0)
 	{
-		pidvalue = wait(&statuetemp);
-		if (pidvalue < 0)
-			break ;
+		message_output(statuetemp, exec, pidvalue);
 		if (pidvalue == pid)
 			status = statuetemp;
+		pidvalue = wait(&statuetemp);
 	}
 	return (status);
 }
@@ -80,20 +81,11 @@ static int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
 	i = 0;
 	close(fd[1]);
 	close(fd[0]);
-	status = wait_child(pid);
-	if (WEXITSTATUS(status) != 0)
-	{
-		if (exec->args[exec->nb_pipes][0] == NULL)
-		{
-			message_error("", ": Permission denied");
-		}
-		else if (WEXITSTATUS(status) == 126)
-			message_error(exec->args[exec->nb_pipes][0], ": Permission denied");
-		else
-			message_error(exec->args[exec->nb_pipes][0], ": Command not found");
-	}
+	status = wait_child(pid, exec);
 	if (exec->error_last_pipe == 1)
 		exec->error = 1;
+	if (exec->args[exec->nb_pipes][0] == NULL)
+		exec->error = 126;
 	else
 		exec->error = WEXITSTATUS(status);
 	return (0);
@@ -106,6 +98,7 @@ int	ft_execve_last(int *fd, t_pip *exec)
 
 	i = 0;
 	pid = fork();
+	exec->pids[exec->nb_pipes] = pid;
 	if (pid == 0)
 	{
 		if (exec->error_last_pipe != 1)

@@ -6,12 +6,13 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:18:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 19:23:40 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:58:53 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
+#include <sys/types.h>
 
 typedef struct s_pip
 {
@@ -28,6 +29,7 @@ typedef struct s_pip
 	int		nb_pipes;
 	int		error_first_pipe;
 	int		error_last_pipe;
+	pid_t *pids;
 }			t_pip;
 
 int			ft_execve_first(int *fd, t_pip *exec);
@@ -44,4 +46,5 @@ int			main(int ac, char **argv, char **env);
 int			message_error(char *first_message, char *last_message);
 int			ft_execve_middle(int *fd, t_pip *exec, int exec_args, int *new_fd);
 void		exec_to_env(t_pip *exec, int i, int arg_exec);
+void	message_output(int statuetemp, t_pip *exec, pid_t pidvalue);
 #endif
