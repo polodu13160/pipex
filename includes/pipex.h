@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:18:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 17:17:08 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:23:40 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_pip
 	char	**env;
 	int		nb_pipes;
 	int		error_first_pipe;
+	int		error_last_pipe;
 }			t_pip;
 
 int			ft_execve_first(int *fd, t_pip *exec);

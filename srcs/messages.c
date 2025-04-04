@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:16:07 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 17:16:46 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 20:26:48 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,3 @@ int	message_error(char *first_message, char *last_message)
 	free(first_message);
 	return (0);
 }
-
-

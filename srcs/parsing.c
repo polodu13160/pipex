@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 17:18:13 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 20:27:09 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,13 @@ int	ft_check_perm(t_pip *exec)
 	if (exec->fd_outfile == -1)
 	{
 		perror(exec->outfile);
-		return (1);
+		exec->error_last_pipe = 1;
+		exec->fd_outfile = open("/dev/null", O_WRONLY);
+		if (exec->fd_outfile == -1)
+		{
+			perror("Failed to open /dev/null");
+			return (1);
+		}
 	}
 	return (0);
 }
