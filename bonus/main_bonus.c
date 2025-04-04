@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/31 21:33:54 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:48:09 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,7 @@ int	main(int ac, char **argv, char **env)
 		}
 		if ((ft_check_perm(exec) == 1 || ft_set_path_env(exec, env) == 1
 				|| ft_pipex(exec) == 1 || 1 == 1))
-		{
 			return (finish(exec));
-		}
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/31 22:01:19 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:39:15 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ static void	check_no_pipe(t_pip *exec, int *fd)
 static void	ft_execve_first_child(t_pip *exec, int *fd, int i)
 {
 	int	test_acces;
-	
+
 	close(fd[0]);
-	close(exec->fd_infile);
 	close(exec->fd_outfile);
 	check_no_pipe(exec, fd);
 	test_acces = access(exec->args[0][0], F_OK);

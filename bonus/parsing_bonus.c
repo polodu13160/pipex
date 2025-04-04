@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/25 04:15:23 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:25:42 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,13 @@ int	ft_check_perm(t_pip *exec)
 	exec->fd_infile = open(exec->infile, O_RDONLY);
 	if (exec->fd_infile == -1)
 	{
-		if (message_error_file(exec->infile, F_OK))
-			perror("Crash Malloc Parsing");
+		perror(exec->infile);
 		exec->error_first_pipe = 1;
 	}
-	exec->fd_outfile = open(exec->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	exec->fd_outfile = open(exec->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (exec->fd_outfile == -1)
 	{
-		if (message_error_file(exec->outfile, F_OK))
-		{
-			perror("Crash Malloc Parsing");
-			return (1);
-		}
+		perror(exec->outfile);
 		return (1);
 	}
 	return (0);

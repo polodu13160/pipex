@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:15:34 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/31 21:05:32 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:47:24 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,11 @@ static void	ft_execve_last_child(t_pip *exec, int *fd, int i)
 	if (exec->args[1][0] != NULL)
 	{
 		test_acces = access(exec->args[1][0], F_OK);
-		if (test_acces == 0 && ft_strchr(exec->args[1][0], '/') != 0)
+		if (test_acces == 0 && \
+			ft_strchr(exec->args[exec->nb_pipes][0], '/') != 0)
 		{
-			execve(exec->args[1][0], exec->args[1], exec->env);
+			execve(exec->args[exec->nb_pipes][0], exec->args[exec->nb_pipes],
+				exec->env);
 			perror("execve failed");
 			finish(exec);
 			exit(2);
@@ -52,7 +54,7 @@ static void	ft_execve_last_child(t_pip *exec, int *fd, int i)
 		else
 			exec_to_env(exec, i, exec->nb_pipes);
 	}
-	if (exec->args[1][0] == NULL)
+	if (exec->args[exec->nb_pipes][0] == NULL)
 		message_error("command not found:", "\n");
 	finish(exec);
 	exit(127);
@@ -84,28 +86,16 @@ static int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
 	close(fd[1]);
 	close(fd[0]);
 	status = wait_child(pid);
-	if (WEXITSTATUS(status) == -1)
-	{
-		exec->error_malloc_child = 1;
-		perror("Last Exec error Malloc");
-		return (1);
-	}
-	if (WEXITSTATUS(status) == 127)
-	{
-		if (message_error("zsh: command not found: ", exec->args[1][0]) == 1)
-		{
-			perror("Last Exec error Malloc");
-			return (1);
-		}
-	}
+	if (WEXITSTATUS(status) != 0)
+		perror(exec->args[exec->nb_pipes][0]);
 	exec->error = WEXITSTATUS(status);
 	return (0);
 }
 
 int	ft_execve_last(int *fd, t_pip *exec)
 {
-	pid_t pid;
-	int i;
+	pid_t	pid;
+	int		i;
 
 	i = 0;
 	pid = fork();

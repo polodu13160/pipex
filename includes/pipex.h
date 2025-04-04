@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:18:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/22 02:45:23 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:17:08 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int			ft_set_path_env(t_pip *exec, char **env);
 int			ft_pipex(t_pip *exec);
 int			main(int ac, char **argv, char **env);
 int			message_error(char *first_message, char *last_message);
-int			message_error_file(char *files, int type);
 int			ft_execve_middle(int *fd, t_pip *exec, int exec_args, int *new_fd);
 void		exec_to_env(t_pip *exec, int i, int arg_exec);
 #endif
