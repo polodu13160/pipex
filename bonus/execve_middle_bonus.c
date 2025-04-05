@@ -6,14 +6,13 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/05 17:14:51 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 19:21:47 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "pipex.h"
 #include <stdlib.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -26,6 +25,10 @@ static void	ft_dupmiddle(int *fd, int *new_fd, t_pip *exec)
 		close(new_fd[0]);
 		close(new_fd[1]);
 		close(fd[1]);
+		if (exec->fd_infile != -1)
+			close(exec->fd_infile);
+		if (exec->fd_infile != -1)
+			close(exec->fd_outfile);
 		perror("Error dup");
 		finish(exec);
 		exit(1);
@@ -36,7 +39,7 @@ static void	ft_dupmiddle(int *fd, int *new_fd, t_pip *exec)
 	close(fd[1]);
 	if (exec->fd_infile != -1)
 		close(exec->fd_infile);
-	if (exec->fd_infile != -1)
+	if (exec->fd_outfile != -1)
 		close(exec->fd_outfile);
 }
 
@@ -54,6 +57,7 @@ static void	ft_execve_middle_child(t_pip *exec, int *fd, int exec_args,
 		if (test_acces == 0 && ft_strchr(exec->args[exec_args][0], '/') != 0)
 		{
 			execve(exec->args[exec_args][0], exec->args[exec_args], exec->env);
+			finish(exec);
 			exit(126);
 		}
 		else

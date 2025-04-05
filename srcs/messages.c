@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:16:07 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/05 17:00:19 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:12:15 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,14 @@ void	message_output(int statuetemp, t_pip *exec, pid_t pidvalue)
 	i = 0;
 	while (i < exec->nb_pipes && pidvalue != exec->pids[i])
 		i++;
-	if ((i == 0 && exec->error_first_pipe == 0) || (i == exec->nb_pipes && exec->error_last_pipe == 0) || (i > 0 && i < exec->nb_pipes))
+	if ((i == 0 && exec->error_first_pipe == 0) || (i == exec->nb_pipes
+			&& exec->error_last_pipe == 0) || (i > 0 && i < exec->nb_pipes))
 	{
 		if (WEXITSTATUS(statuetemp) != 0)
 		{
-			if (exec->args[i][0] == NULL)
+			if (WEXITSTATUS(statuetemp) == 10)
+				message_error("Error malloc", "in child");
+			else if (exec->args[i][0] == NULL)
 				message_error("", ": Command not found");
 			else if (WEXITSTATUS(statuetemp) == 126)
 				message_error(exec->args[i][0], ": Permission denied");

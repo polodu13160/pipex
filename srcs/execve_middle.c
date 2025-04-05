@@ -6,14 +6,13 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/05 15:40:01 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:49:28 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "pipex.h"
 #include <stdlib.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -44,7 +43,6 @@ static void	ft_execve_middle_child(t_pip *exec, int *fd, int exec_args,
 	int	i;
 	int	test_acces;
 
-	
 	i = 0;
 	ft_dupmiddle(fd, new_fd, exec);
 	if (exec->args[exec_args][0] != NULL)

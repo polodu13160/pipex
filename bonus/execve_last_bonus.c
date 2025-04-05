@@ -6,14 +6,13 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 01:15:34 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/05 16:46:45 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:49:10 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "pipex.h"
 #include <stdlib.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -44,7 +43,7 @@ static void	ft_execve_last_child(t_pip *exec, int *fd, int i)
 	{
 		test_acces = access(exec->args[exec->nb_pipes][0], F_OK);
 		if (test_acces == 0 && ft_strchr(exec->args[exec->nb_pipes][0],
-				'/') != 0)
+			'/') != 0)
 		{
 			execve(exec->args[exec->nb_pipes][0], exec->args[exec->nb_pipes],
 				exec->env);
@@ -75,7 +74,7 @@ static int	ft_wait_child(pid_t pid, t_pip *exec)
 	return (status);
 }
 
-static int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
+int	ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd)
 {
 	int	status;
 	int	i;

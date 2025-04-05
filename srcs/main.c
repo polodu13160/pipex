@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/05 16:57:40 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:35:51 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	ft_pipex(t_pip *exec)
 void	init_exec(int ac, t_pip *exec, char **env)
 {
 	exec->path_absolut_exec = NULL;
-	exec->error_malloc_child = 0;
 	exec->error = 0;
 	exec->nb_pipes = ac - 4;
 	exec->path_args = NULL;

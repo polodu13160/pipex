@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/05 16:54:46 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:01:39 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,18 @@ static void	ft_execve_first_child(t_pip *exec, int *fd)
 	if (exec->fd_outfile != -1)
 		close(exec->fd_outfile);
 	close(fd[1]);
-	test_acces = access(exec->args[0][0], F_OK);
-	if (test_acces == 0 && ft_strchr(exec->args[0][0], '/') != 0)
+	if (exec->args[0][0] != NULL)
 	{
-		execve(exec->args[0][0], exec->args[0], exec->env);
-		finish(exec);
-		exit(126);
+		test_acces = access(exec->args[0][0], F_OK);
+		if (test_acces == 0 && ft_strchr(exec->args[0][0], '/') != 0)
+		{
+			execve(exec->args[0][0], exec->args[0], exec->env);
+			finish(exec);
+			exit(126);
+		}
+		else
+			ft_exec_to_env(exec, i, 0);
 	}
-	else
-		ft_exec_to_env(exec, i, 0);
 	finish(exec);
 	exit(127);
 }
@@ -75,7 +78,7 @@ int	ft_execve_first(int *fd, t_pip *exec)
 	exec->pids[0] = pid;
 	if (pid == 0)
 	{
-		if (exec->error_first_pipe == 0 && exec->args[0][0] != NULL)
+		if (exec->error_first_pipe == 0)
 			ft_execve_first_child(exec, fd);
 		else
 		{

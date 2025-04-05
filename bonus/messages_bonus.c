@@ -6,13 +6,13 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:16:07 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/05 17:00:28 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:11:22 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "stdlib.h"
 #include "pipex.h"
+#include "stdlib.h"
 
 int	message_error(char *first_message, char *last_message)
 {
@@ -42,13 +42,20 @@ void	message_output(int statuetemp, t_pip *exec, pid_t pidvalue)
 	i = 0;
 	while (i < exec->nb_pipes && pidvalue != exec->pids[i])
 		i++;
-	if (WEXITSTATUS(statuetemp) != 0)
+	if ((i == 0 && exec->error_first_pipe == 0) || (exec->nb_pipes > 0
+			&& i == exec->nb_pipes && exec->error_last_pipe == 0) || (i > 0
+			&& i < exec->nb_pipes))
 	{
-		if (exec->args[i][0] == NULL)
-			message_error("", ": Permission denied");
-		else if (WEXITSTATUS(statuetemp) == 126)
-			message_error(exec->args[i][0], ": Permission denied");
-		else
-			message_error(exec->args[i][0], ": Command not found");
+		if (WEXITSTATUS(statuetemp) != 0)
+		{
+			if (WEXITSTATUS(statuetemp) == 10)
+				message_error("Error malloc", "in child");
+			else if (exec->args[i][0] == NULL)
+				message_error("", ": Command not found");
+			else if (WEXITSTATUS(statuetemp) == 126)
+				message_error(exec->args[i][0], ": Permission denied");
+			else
+				message_error(exec->args[i][0], ": Command not found");
+		}
 	}
 }

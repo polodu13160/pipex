@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/05 17:10:22 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 19:22:51 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ int	ft_check_perm(t_pip *exec)
 	{
 		perror(exec->outfile);
 		exec->error_last_pipe = 1;
-		
+		if (exec->nb_pipes == 0)
+			return (1);
 	}
 	return (0);
 }

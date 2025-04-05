@@ -6,13 +6,13 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:18:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/05 15:34:37 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:35:28 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
-#include <sys/types.h>
+# include <sys/types.h>
 
 typedef struct s_pip
 {
@@ -23,13 +23,12 @@ typedef struct s_pip
 	int		fd_outfile;
 	char	**path_args;
 	char	*path_absolut_exec;
-	int		error_malloc_child;
 	int		error;
 	char	**env;
 	int		nb_pipes;
 	int		error_first_pipe;
 	int		error_last_pipe;
-	pid_t *pids;
+	pid_t	*pids;
 }			t_pip;
 
 int			ft_execve_first(int *fd, t_pip *exec);
@@ -46,5 +45,6 @@ int			main(int ac, char **argv, char **env);
 int			message_error(char *first_message, char *last_message);
 int			ft_execve_middle(int *fd, t_pip *exec, int exec_args, int *new_fd);
 void		ft_exec_to_env(t_pip *exec, int i, int arg_exec);
-void	message_output(int statuetemp, t_pip *exec, pid_t pidvalue);
+void		message_output(int statuetemp, t_pip *exec, pid_t pidvalue);
+int			ft_execve_last_parent(pid_t pid, t_pip *exec, int *fd);
 #endif
