@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:06:30 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 20:32:47 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 17:11:38 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "unistd.h"
 #include <fcntl.h>
 
-static int	check_text_arg_and_split(int ac, char **argv, t_pip *exec, int j)
+static int	ft_check_text_arg_and_split(int ac, char **argv, t_pip *exec, int j)
 {
 	int	i;
 
@@ -25,11 +25,7 @@ static int	check_text_arg_and_split(int ac, char **argv, t_pip *exec, int j)
 	{
 		exec->args[j] = ft_split(argv[i], ' ');
 		if (exec->args[j] == NULL)
-		{
-			free_tab_three_dim(exec->args);
-			free(exec);
 			return (1);
-		}
 		j++;
 	}
 	exec->args[j] = NULL;
@@ -48,10 +44,9 @@ int	ft_parsing(char **argv, int ac, t_pip *exec)
 	exec->args = ft_calloc(((ac - 2) + 1), sizeof(char **));
 	if (exec->args == NULL)
 	{
-		free(exec);
 		return (1);
 	}
-	if (check_text_arg_and_split(ac, argv, exec, j) == 1)
+	if (ft_check_text_arg_and_split(ac, argv, exec, j) == 1)
 		return (1);
 	return (0);
 }
@@ -69,12 +64,6 @@ int	ft_check_perm(t_pip *exec)
 	{
 		perror(exec->outfile);
 		exec->error_last_pipe = 1;
-		exec->fd_outfile = open("/dev/null", O_WRONLY);
-		if (exec->fd_outfile == -1)
-		{
-			perror("Failed to open /dev/null");
-			return (1);
-		}
 	}
 	return (0);
 }

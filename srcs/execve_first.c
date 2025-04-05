@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 22:03:33 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 16:54:46 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-static void	check_no_pipe(t_pip *exec, int *fd)
+static void	ft_check_no_pipe(t_pip *exec, int *fd)
 {
 	if (exec->nb_pipes == 0)
 	{
@@ -49,9 +49,10 @@ static void	ft_execve_first_child(t_pip *exec, int *fd)
 
 	i = 0;
 	close(fd[0]);
-	check_no_pipe(exec, fd);
+	ft_check_no_pipe(exec, fd);
 	close(exec->fd_infile);
-	close(exec->fd_outfile);
+	if (exec->fd_outfile != -1)
+		close(exec->fd_outfile);
 	close(fd[1]);
 	test_acces = access(exec->args[0][0], F_OK);
 	if (test_acces == 0 && ft_strchr(exec->args[0][0], '/') != 0)
@@ -61,7 +62,7 @@ static void	ft_execve_first_child(t_pip *exec, int *fd)
 		exit(126);
 	}
 	else
-		exec_to_env(exec, i, 0);
+		ft_exec_to_env(exec, i, 0);
 	finish(exec);
 	exit(127);
 }
@@ -82,7 +83,7 @@ int	ft_execve_first(int *fd, t_pip *exec)
 			close(fd[1]);
 			finish(exec);
 		}
-		exit(0);
+		exit(126);
 	}
 	return (0);
 }

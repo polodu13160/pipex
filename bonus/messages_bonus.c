@@ -6,22 +6,27 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 13:16:07 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/03/25 05:07:54 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 17:00:28 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "stdlib.h"
+#include "pipex.h"
 
 int	message_error(char *first_message, char *last_message)
 {
 	last_message = ft_strjoin(last_message, "\n");
 	if (last_message == NULL)
+	{
+		perror("malloc error");
 		return (1);
+	}
 	first_message = ft_strjoin(first_message, last_message);
 	if (first_message == NULL)
 	{
 		free(last_message);
+		perror("malloc error");
 		return (1);
 	}
 	ft_putstr_fd(first_message, 2);
@@ -30,28 +35,20 @@ int	message_error(char *first_message, char *last_message)
 	return (0);
 }
 
-int	message_error_file(char *file, int type)
+void	message_output(int statuetemp, t_pip *exec, pid_t pidvalue)
 {
-	char	*message;
+	int	i;
 
-	if (access(file, type) == 0)
+	i = 0;
+	while (i < exec->nb_pipes && pidvalue != exec->pids[i])
+		i++;
+	if (WEXITSTATUS(statuetemp) != 0)
 	{
-		file = ft_strjoin(file, "\n");
-		if (file == NULL)
-			return (1);
-		message = ft_strjoin("Permission denied: ", file);
+		if (exec->args[i][0] == NULL)
+			message_error("", ": Permission denied");
+		else if (WEXITSTATUS(statuetemp) == 126)
+			message_error(exec->args[i][0], ": Permission denied");
+		else
+			message_error(exec->args[i][0], ": Command not found");
 	}
-	else
-	{
-		file = ft_strjoin(file, "\n");
-		if (file == NULL)
-			return (1);
-		message = ft_strjoin("No such file or directory: ", file);
-	}
-	free(file);
-	if (message == NULL)
-		return (1);
-	ft_putstr_fd(message, 2);
-	free(message);
-	return (0);
 }

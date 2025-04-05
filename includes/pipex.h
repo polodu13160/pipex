@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:18:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 21:58:53 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 15:34:37 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ int			ft_pipex(t_pip *exec);
 int			main(int ac, char **argv, char **env);
 int			message_error(char *first_message, char *last_message);
 int			ft_execve_middle(int *fd, t_pip *exec, int exec_args, int *new_fd);
-void		exec_to_env(t_pip *exec, int i, int arg_exec);
+void		ft_exec_to_env(t_pip *exec, int i, int arg_exec);
 void	message_output(int statuetemp, t_pip *exec, pid_t pidvalue);
 #endif

@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:05:46 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 21:19:03 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 17:04:17 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,5 @@ int	finish(t_pip *exec)
 		free(exec->path_absolut_exec);
 	if (exec->error_malloc_child == 1 || exec->error != 0)
 		value_return = exec->error;
-	free(exec);
 	return (value_return);
 }

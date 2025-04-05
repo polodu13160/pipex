@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 00:59:48 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 20:53:02 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 16:53:18 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-void	exec_to_env(t_pip *exec, int i, int arg_exec)
+void	ft_exec_to_env(t_pip *exec, int i, int arg_exec)
 {
 	int	test_acces;
 

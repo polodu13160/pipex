@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 21:25:14 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 16:57:40 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-void	ft_execve_next(int *fd, t_pip *exec)
-{
-	int	i;
-	int	new_fd[2];
-
-	new_fd[0] = 1;
-	i = 1;
-	while (exec->nb_pipes != i)
-	{
-		ft_execve_middle(fd, exec, i, new_fd);
-		fd[0] = new_fd[0];
-		fd[1] = new_fd[1];
-		i++;
-	}
-	ft_execve_last(fd, exec);
-}
 
 int	ft_pipex(t_pip *exec)
 {
@@ -51,7 +34,7 @@ int	ft_pipex(t_pip *exec)
 		ft_execve_first(fd, exec);
 		if (exec->nb_pipes != 0)
 		{
-			ft_execve_next(fd, exec);
+			ft_execve_last(fd, exec);
 		}
 	}
 	return (0);
@@ -73,25 +56,22 @@ void	init_exec(int ac, t_pip *exec, char **env)
 
 int	main(int ac, char **argv, char **env)
 {
-	t_pip	*exec;
+	t_pip	exec;
 
 	if (ac == 5)
 	{
-		exec = malloc(sizeof(t_pip));
-		if (exec == NULL)
-			return (1);
-		init_exec(ac, exec, env);
-		exec->pids = ft_calloc(ac - 3, sizeof(pid_t));
-		if (exec->pids == NULL || ft_parsing(argv, ac, exec) == 1)
+		init_exec(ac, &exec, env);
+		exec.pids = ft_calloc(ac - 3, sizeof(pid_t));
+		if (ft_parsing(argv, ac, &exec) == 1 || exec.pids == NULL)
 		{
-			finish(exec);
+			finish(&exec);
 			ft_putstr_fd("Error parsing", 2);
 			return (1);
 		}
-		if ((ft_check_perm(exec) == 1 || ft_set_path_env(exec, env) == 1
-				|| ft_pipex(exec) == 1 || 1 == 1))
+		if ((ft_check_perm(&exec) == 1 || ft_set_path_env(&exec, env) == 1
+				|| ft_pipex(&exec) == 1 || 1 == 1))
 		{
-			return (finish(exec));
+			return (finish(&exec));
 		}
 	}
 	return (1);

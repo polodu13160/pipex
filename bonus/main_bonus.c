@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 21:12:44 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 17:48:09 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 16:58:16 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	ft_execve_next(int *fd, t_pip *exec)
 			exit(1);
 		}
 		ft_execve_middle(fd, exec, i, new_fd);
-		close(fd[0]);
-		close(fd[1]);
 		fd[0] = new_fd[0];
 		fd[1] = new_fd[1];
 		i++;
@@ -75,27 +73,28 @@ void	init_exec(int ac, t_pip *exec, char **env)
 	exec->fd_infile = -1;
 	exec->error_first_pipe = 0;
 	exec->fd_outfile = -1;
+	exec->error_last_pipe = 0;
 }
 
 int	main(int ac, char **argv, char **env)
 {
-	t_pip	*exec;
+	t_pip	exec;
 
 	if (ac >= 4)
 	{
-		exec = malloc(sizeof(t_pip));
-		if (exec == NULL)
-			return (1);
-		init_exec(ac, exec, env);
-		if (ft_parsing(argv, ac, exec) == 1)
+		init_exec(ac, &exec, env);
+		exec.pids = ft_calloc(ac - 3, sizeof(pid_t));
+		if (ft_parsing(argv, ac, &exec) == 1 || exec.pids == NULL)
 		{
-			finish(exec);
+			finish(&exec);
 			ft_putstr_fd("Error parsing", 2);
 			return (1);
 		}
-		if ((ft_check_perm(exec) == 1 || ft_set_path_env(exec, env) == 1
-				|| ft_pipex(exec) == 1 || 1 == 1))
-			return (finish(exec));
+		if ((ft_check_perm(&exec) == 1 || ft_set_path_env(&exec, env) == 1
+				|| ft_pipex(&exec) == 1 || 1 == 1))
+		{
+			return (finish(&exec));
+		}
 	}
 	return (1);
 }

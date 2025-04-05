@@ -6,7 +6,7 @@
 /*   By: pde-petr <pde-petr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:07:35 by pde-petr          #+#    #+#             */
-/*   Updated: 2025/04/04 21:59:30 by pde-petr         ###   ########.fr       */
+/*   Updated: 2025/04/05 15:40:01 by pde-petr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-static void	ft_printfinal(int *fd, int *new_fd, t_pip *exec)
+static void	ft_dupmiddle(int *fd, int *new_fd, t_pip *exec)
 {
+	close(exec->fd_infile);
+	close(exec->fd_outfile);
 	if (dup2(fd[0], 0) == -1 || dup2(new_fd[0], fd[0]) == -1 || dup2(new_fd[1],
 			1))
 	{
@@ -42,10 +44,9 @@ static void	ft_execve_middle_child(t_pip *exec, int *fd, int exec_args,
 	int	i;
 	int	test_acces;
 
-	close(exec->fd_infile);
-	close(exec->fd_outfile);
+	
 	i = 0;
-	ft_printfinal(fd, new_fd, exec);
+	ft_dupmiddle(fd, new_fd, exec);
 	if (exec->args[exec_args][0] != NULL)
 	{
 		test_acces = access(exec->args[exec_args][0], F_OK);
@@ -55,7 +56,7 @@ static void	ft_execve_middle_child(t_pip *exec, int *fd, int exec_args,
 			exit(126);
 		}
 		else
-			exec_to_env(exec, i, exec_args);
+			ft_exec_to_env(exec, i, exec_args);
 	}
 	finish(exec);
 	exit(127);
